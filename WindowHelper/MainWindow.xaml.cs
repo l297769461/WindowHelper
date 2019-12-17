@@ -25,6 +25,33 @@ namespace WindowHelper
     public partial class MainWindow : Window, IDisposable
     {
         #region 变量
+        private const int SW_HIDE = 0;
+
+        private const int SW_NORMAL = 1;
+
+        /// <summary>
+        /// 最大化
+        /// </summary>
+        private const int SW_MAXIMIZE = 3;
+
+        private const int SW_SHOWNOACTIVATE = 4;
+
+        private const int SW_SHOW = 5;
+
+        /// <summary>
+        /// 最小化
+        /// </summary>
+        private const int SW_MINIMIZE = 6;
+
+        /// <summary>
+        /// 还原
+        /// </summary>
+        private const int SW_RESTORE = 9;
+
+        private const int SW_SHOWDEFAULT = 10;
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindowAsync(IntPtr hwnd, int nCmdShow);
 
         [DllImport("user32.dll")]
         public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
@@ -57,6 +84,14 @@ namespace WindowHelper
             DataContext = new WindowHelperViewModel();
 
             vm.Datas = new System.Collections.ObjectModel.ObservableCollection<WindowsInfoViewModel>();
+            
+            var str = "窗口快捷切换助手\r\n抱歉，兼容性问题，\r\n请保持窗口打开或最大化，\r\n别最小化！！！谢谢~";
+            var notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.BalloonTipText = str;
+            notifyIcon.Text = str;
+            notifyIcon.Icon = Properties.Resources.切换;
+            notifyIcon.Visible = true;
+            notifyIcon.ShowBalloonTip(3000);
 
             MenuItem item = new MenuItem();
             item.Header = "禁用/启用";
@@ -176,7 +211,17 @@ namespace WindowHelper
                 var vmItem = vm.Datas.Where(c => c.KeyCode == e.KeyValue).FirstOrDefault();
                 if (vmItem != null && vmItem.State == 1 && !vmItem.WindowPtr.Equals(IntPtr.Zero))
                 {
-                    SwitchToThisWindow(vmItem.WindowPtr, true);
+                    e.Handled = true;
+
+                    var ptr = vmItem.WindowPtr;
+                    Task.Run(() =>
+                    {
+                        //System.Threading.Thread.Sleep(100);
+                        //ShowWindowAsync(ptr, 4);
+
+                        System.Threading.Thread.Sleep(100);
+                        SwitchToThisWindow(ptr, true);
+                    });
                 }
             }
         }
