@@ -1,0 +1,35 @@
+﻿<Window x:Class="WindowHelper.SetWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WindowHelper"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Icon="切换.ico"
+        Title="SetWindow"
+        ShowInTaskbar="False"
+        Topmost="True"
+        Background="Transparent"
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="65" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid MouseLeftButtonUp="Grid_MouseLeftButtonUp"
+          MouseRightButtonDown="Grid_MouseRightButtonDown"
+          Cursor="Cross">
+        <Grid Background="#7d7d7d" Opacity="0.1"/>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="鼠标，左键点击确认！"/>
+            <TextBlock Text="鼠标，右键点击退出！"/>
+        </StackPanel>
+    </Grid>
+</Window>
